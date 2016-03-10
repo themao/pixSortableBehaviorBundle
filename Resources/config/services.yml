@@ -6,6 +6,7 @@ services:
             entityManager: "@doctrine.orm.entity_manager"
         calls:
             - [ 'setPositionField', [%pix.sortable.behavior.position.field%]]
+            - [ 'setContainer', [@service_container]]
 
     pix_sortable_behavior.position.mongodb:
         class: Pix\SortableBehaviorBundle\Services\PositionODMHandler
@@ -14,11 +15,13 @@ services:
             documentManager: "@doctrine_mongodb.odm.document_manager"
         calls:
             - [ 'setPositionField', [%pix.sortable.behavior.position.field%]]
+            - [ 'setContainer', [@service_container]]
 
     pix_sortable_behavior.twig.extension:
         class: Pix\SortableBehaviorBundle\Twig\ObjectPositionExtension
         arguments:
             - @pix_sortable_behavior.position
+            - @service_container
         public: false
         tags:
             - { name: twig.extension }

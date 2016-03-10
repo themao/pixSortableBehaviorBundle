@@ -10,11 +10,24 @@
 
 namespace Pix\SortableBehaviorBundle\Services;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 abstract class PositionHandler
 {
+    /** @var ContainerInterface */
+    protected $container;
+
     protected $positionField;
 
     abstract public function getLastPosition($entity);
+
+    /**
+     * @param ContainerInterface $container
+     */
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
     /**
      * @param mixed $positionField
@@ -52,6 +65,7 @@ abstract class PositionHandler
     {
         $getter = sprintf('get%s', ucfirst($this->getPositionFieldByEntity($object)));
         $newPosition = 0;
+        $startCount = $this->container->getParameter('start_count');
 
         switch ($position) {
             case 'up' :
@@ -67,8 +81,8 @@ abstract class PositionHandler
                 break;
 
             case 'top':
-                if ($object->{$getter}() > 0) {
-                    $newPosition = 0;
+                if ($object->{$getter}() > $startCount) {
+                    $newPosition = $startCount;
                 }
                 break;
 

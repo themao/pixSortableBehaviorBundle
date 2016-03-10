@@ -13,13 +13,13 @@
         </a>
     {% endif %}
 
-    {% if pix_position > 0 %}
+    {% if pix_position > firstPosition() %}
         <a class="btn btn-sm btn-default" href="{{ admin.generateObjectUrl('move', object, {'position': 'up'}) }}" title="{{ 'move_up'|trans }}">
             {{- 'icon_move_up'|trans -}}
         </a>
     {% endif %}
 
-    {% if pix_position > 0 %}
+    {% if pix_position > firstPosition() %}
         <a class="btn btn-sm btn-default" href="{{ admin.generateObjectUrl('move', object, {'position': 'top'}) }}" title="{{ 'move_to_top'|trans }}">
             {{- 'icon_move_to_top'|trans -}}
         </a>

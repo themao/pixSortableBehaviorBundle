@@ -3,6 +3,7 @@
 namespace Pix\SortableBehaviorBundle\Twig;
 
 use Pix\SortableBehaviorBundle\Services\PositionHandler;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Description of ObjectPositionExtension
@@ -12,15 +13,22 @@ use Pix\SortableBehaviorBundle\Services\PositionHandler;
 class ObjectPositionExtension extends \Twig_Extension
 {
     const NAME = 'sortableObjectPosition';
+    const FIRST_POSITION_FUNCTION_NAME = 'firstPosition';
 
     /**
      * PositionHandler
      */
     private $positionService;
 
-    public function __construct(PositionHandler $positionService)
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function __construct(PositionHandler $positionService, ContainerInterface $container)
     {
         $this->positionService = $positionService;
+        $this->container = $container;
     }
 
     /**
@@ -40,6 +48,12 @@ class ObjectPositionExtension extends \Twig_Extension
                 {
                     $getter = sprintf('get%s', ucfirst($this->positionService->getPositionFieldByEntity($entity)));
                     return $entity->{$getter}();
+                }
+            ),
+            new \Twig_SimpleFunction(self::FIRST_POSITION_FUNCTION_NAME,
+                function ()
+                {
+                    return $this->container->getParameter('start_count');
                 }
             )
         );
